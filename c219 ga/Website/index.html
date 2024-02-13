@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Stylesheet -->
+    <link href="stylesheet/style.css" rel="stylesheet" type="text/css" />
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/01c275887b.js" crossorigin="anonymous"></script>
+    <!-- Tippy JS -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale-extreme.css" />
+    <!-- jQuery Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <!-- Firebase -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script> -->
+    <title>School Library Web App</title>
+</head>
+
+<body>
+
+    <!-- Top Nav -->
+    <header>
+        <nav class="navbar">
+            <div class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/2/23/AS_sample_logo.png"
+                    alt="Logo"></div>
+            <div class="push-left">
+                <button id="menu-toggler" data-class="menu-active" class="hamburger">
+                    <span class="hamburger-line hamburger-line-top"></span>
+                    <span class="hamburger-line hamburger-line-middle"></span>
+                    <span class="hamburger-line hamburger-line-bottom"></span>
+                </button>
+
+                <!--  Menu compatible with wp_nav_menu  -->
+                <ul id="primary-menu" class="menu nav-menu">
+                    <li id="nav__Home" class="menu-item current-menu-item"><a class="nav__link">Home</a></li>
+                    <li id="nav__Stats" class="menu-item"><a class="nav__link">Statistics</a>
+                    <li id="nav__Inventory" class="menu-item"><a class="nav__link">Inventory</a></li>
+                    <li id="" class="menu-item"><a class="nav__link">Add Book</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Dot Nav -->
+        <div class="dot-nav flex-column">
+            <div class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+            <div class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+            <div class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+        </div>
+
+        <!-- 1. Book Display Section -->
+        <section id="section__home">
+            <!-- SEARCH -->
+            <div class="top flex-column flex-center-all">
+                <i class="header__icon fa-solid fa-book-open-reader"></i>
+                <h1 class="header__title">Welcome to a World of Infinite Knowledge</h1>
+                <p class="header__subtitle">Unlocking Knowledge, One Click at a Time: Your School Library, Anywhere,
+                    Anytime!</p>
+
+                <div class="search-bar">
+                    <input id="BookDisplay__search-bar__input" class="search-bar__input" type="text"
+                        placeholder="Search for book titles...">
+                    <button class="search-bar__button flex-center-all">
+                        <p>Search</p>
+                        <i class="flex fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-column">
+                <div class="flex">
+                    <input type="text" id="desc" name="fname" placeholder="desc"><br>
+                    <input type="text" id="title" name="fname" placeholder="title"><br>
+                    <input type="text" id="author" name="lname" placeholder="author"><br><br>
+                    <input type="text" id="genre" name="lname" placeholder="genre"><br><br>
+                    <input type="text" id="cover-type" name="lname" placeholder="cover type"><br><br>
+                </div>
+                <div class="flex">
+                    <label for="bookmark">bookmark</label>
+                    <input type="checkbox" id="bookmark" name="bookmark" placeholder="bookmark"><br><br>
+
+                    <input type="text" id="language" name="lname" placeholder="language"><br><br>
+                    <input type="number" id="reviews" name="lname" placeholder="no of reviews"><br><br>
+                    <input type="number" id="pages" name="lname" placeholder="pages"><br><br>
+                </div>
+                <div class="flex">
+                    <label for="pub-date">pub-date</label>
+                    <input type="date" id="pub-date" name="lname" placeholder="pub date"><br><br>
+                    <input type="number" id="ratings" name="lname" placeholder="ratings"><br><br>
+
+                    <label for="rent-status">rent-status</label>
+                    <input type="checkbox" id="rent-status" name="rent-status" placeholder="rent-status"><br><br>
+
+                    <label for="rental-date">rent-date</label>
+                    <input type="date" id="rental-date" name="lname" placeholder="rental date"><br><br>
+                </div>
+
+                <button id="add"> ok</button>
+            </div>
+
+            <!-- Author -->
+            <div class="filter-menu flex-column">
+                <label for="cars">Author</label>
+                <div id="Filter__Select-Author" class="select-container flex-column">
+                    <div class="flex">
+                        <select id="">
+                            <option value="Elisabetta Dami">Elisabetta Dami</option>
+                            <option value="George R. R. Martin">George R. R. Martin</option>
+                            <option value="J. K. Rowling">J. K. Rowling</option>
+                            <option value="Suzanne Collins">Suzanne Collins</option>
+                        </select>
+                        <button class="filter__select-button">Enter</button>
+                    </div>
+
+                    <div class="filter__select-chosen-container flex">
+                    </div>
+                </div>
+
+                <!-- Genre -->
+                <label for="cars">Genre</label>
+                <div id="Filter__Select-Genre" class="select-container flex-column">
+                    <div class="flex">
+                        <select id="">
+                            <option value="Children">Children</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Fiction">Fiction</option>
+                        </select>
+                        <button class="filter__select-button">Enter</button>
+                    </div>
+
+                    <div class="filter__select-chosen-container flex">
+                    </div>
+                </div>
+
+                <!-- Ratings -->
+                <label>Ratings</label>
+                <div id="Filter__Checkbox-Ratings" class="filter-ratings flex">
+                    <input type="checkbox" name="vehicle1" value="1-star">
+                    <input type="checkbox" name="vehicle1" value="2-star">
+                    <input type="checkbox" name="vehicle1" value="3-star">
+                    <input type="checkbox" name="vehicle1" value="4-star">
+                    <input type="checkbox" name="vehicle1" value="5-star">
+                </div>
+
+                <label>Publication Date</label>
+
+                <!-- Cover Type -->
+                <label>Cover Type</label>
+                <div id="Filter__Select-Cover-Type" class="select-container flex-column">
+                    <div class="flex">
+                        <select id="">
+                            <option value="Hardcover">Hardcover</option>
+                            <option value="Softcover">Softcover</option>
+                            <option value="Paperback">Paperback</option>
+                            <option value="Pocket-sized">Pocket-sized</option>
+                            <option value="Board">Board</option>
+                            <option value="Spiral-bound">Spiral-bound</option>
+                            <option value="Flexibound">Flexibound</option>
+                        </select>
+                        <button class="filter__select-button">Enter</button>
+                    </div>
+
+                    <div class="filter__select-chosen-container flex">
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <label>Language</label>
+                <div id="Filter__Select-Language" class="select-container flex-column">
+                    <div class="flex">
+                        <select id="">
+                            <option value="English">English</option>
+                            <option value="Chinese">Chinese</option>
+                            <option value="Malay">Malay</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Japanese">Japanese</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="German">German</option>
+                            <option value="Italian">Italian</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                            <option value="Thai">Thai</option>
+                        </select>
+                        <button class="filter__select-button">Enter</button>
+                    </div>
+
+                    <div class="filter__select-chosen-container flex">
+                    </div>
+                </div>
+
+                <!-- Rental Status -->
+                <label>Rental Status</label>
+                <div class="flex">
+                    <input type="checkbox" name="Rented" value="rented">
+                    <label for="Rented">Rented</label><br>
+                    <input type="checkbox" name="Not Rented" value="not-rented">
+                    <label for="Not Rented">Not Rented</label><br>
+                </div>
+            </div>
+
+            <!-- BOOK DISPLAY -->
+            <div id="Book-Display" class="bottom flex-column flex-center-all">
+                <!-- TOP OPTIONS -->
+                <div class="tab-options flex">
+                    <!-- Show No. of Items -->
+                    <div class="tab-options__select">
+                        <p>Show items</p>
+                        <select id="pagination__options">
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                            <option class="tab-options__select-hide" value="18">18</option>
+                            <option class="tab-options__select-hide" value="21">21</option>
+                        </select>
+                        <p class="pagination__number-of-items-text"><span>1 - 8</span> of <span>0</span> items</p>
+                    </div>
+
+                    <!-- View Type -->
+                    <div class="tab-options__view">
+                        <p>View: </p>
+                        <span id="Book-Display__Grid-View" class="flex-center-all tab-options__view-icon active"><img
+                                src="./images/grid-icon.svg" alt="Grid Icon"></span>
+                        <span id="Book-Display__List-View" class="flex-center-all tab-options__view-icon"><i
+                                class="fa-solid fa-list"></i></span>
+                    </div>
+
+                    <!-- Sort & Filter -->
+                    <div class="tab-options__sort-and-filter">
+                        <p>Sort: </p>
+                        <select id="Sort-Options">
+                            <option value="relevance">Relevance</option>
+                            <option value="title">Title</option>
+                            <option value="genre">Genre</option>
+                            <option value="author">Author</option>
+                            <option value="ratings">Ratings</option>
+                            <option value="reviews">Reviews</option>
+                            <option value="pages">Pages</option>
+                            <option value="publication-date">Publish Date</option>
+                        </select>
+                        <div class="flex-column">
+                            <i class="fa-solid fa-caret-up tab-options__sort-order up active"></i>
+                            <i class="fa-solid fa-caret-down tab-options__sort-order down"></i>
+                        </div>
+                        <p>Filter: </p>
+                        <button class="flex-center-all">Find Items<i class="fa-solid fa-filter"></i></button>
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="tab-content">
+
+
+
+                </div>
+
+                <!-- BOTTOM OPTIONS -->
+                <div class="tab-options bottom flex">
+                    <!-- Show No. of Items. -->
+                    <div class="tab-options__select">
+                        <p>Displaying</p>
+                        <select id="pagination__options">
+                            <option value="8">8 items</option>
+                            <option value="12">12 items</option>
+                            <option value="16">16 items</option>
+                        </select>
+                        <p class="pagination__number-of-items-text"><span>1 - 15</span> of <span>200</span> items
+                        </p>
+                    </div>
+
+                    <!-- Pagination Numbers. -->
+                    <div class="tab-options__pagination-nav flex-center-all">
+                        <button class="pagination__nav-button prev" type="button"><i
+                                class="fa-solid fa-chevron-left"></i>Prev</button>
+
+                        <div class="pagination__nav-numbers flex-center-all">
+                        </div>
+
+                        <button class="pagination__nav-button next" type="button">Next<i
+                                class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+
+                    <!-- Go to Page. -->
+                    <div class="tab-options__page-input">
+                        <p>Go to page</p>
+                        <input type="number" id="" name="" value="1" minlength="1" maxlength="4">
+                        <p>of <span>0</span> pages</p>
+                    </div>
+                </div>
+        </section>
+
+        <!-- 2. Statistics Section -->
+        <section id="section__statistics">
+
+            <div>
+                <h1>Title</h1>
+                <p>bhdbchwubukhu</p>
+            </div>
+
+            <!-- Dashboard -->
+            <!-- <div class="statistics-dashboard flex flex-center-all">
+                <div class="statistics-dashboard__board1 flex flex-center-all">
+                    <div>
+                        <h1>1,000+ Titles</h1>
+                    </div>
+
+                    <div>
+                        <h1>34 Genres</h1>
+                    </div>
+
+                    <div>
+                        <h1>4.6 Avg Rating</h1>
+                    </div>
+
+                    <div>
+                        <h1>200+ Books Rented per Month</h1>
+                    </div>
+                </div>
+
+                <div class="statistics-dashboard__board2 flex flex-center-all">
+                    <div>
+                        hi
+                    </div>
+
+                    <div>
+                        hi
+                    </div>
+                </div>
+
+                <div class="statistics-dashboard__board3">
+                    <canvas id="Dashboard__Bar-Chart"></canvas>
+                </div>
+
+                <div class="statistics-dashboard__board4">
+                    hi
+                </div>
+            </div> -->
+
+
+            <!--  -->
+            <!-- <div> -->
+            <canvas id="Titles__Top-Rating"></canvas>
+            <!-- </div> -->
+
+        </section>
+
+        <!-- 3. Inventory Section -->
+        <section id="section__inventory">
+            <table id="Inventory-DataTable" class="display cell-border compact stripe"></table>
+        </section>
+
+        <!-- jQuery Modal --- Modal -->
+        <div id="ex1" class="modal">
+            <div class="modal-content flex">
+                <div class="model-content__book-image col flex flex-center-all">
+                    <!-- book -->
+                    <div id="book" class="view-cover">
+                        <div class="main">
+                            <div class="book-font">
+                                <div class="book-cover"></div>
+                                <div class="book-cover-back"></div>
+                            </div>
+                            <div class="book-page">
+                                <div id="page-1" class="page">
+                                    <h4>Elephant In The Garden1</h4>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="book-back"> </div>
+                            <div class="book-bone"></div>
+                            <div class="book-top"></div>
+                            <div class="book-right"></div>
+                            <div class="book-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-content__text col flex-column">
+
+                    <div class="model-content__text-container flex-column">
+                        <div>
+                            <p class="p-subtitle">Psychology</h5>
+                            <h1>An Elephant In The Garden1</h1>
+                            <div class="modal-content__author-and-ratings flex">
+                                <div>
+                                    <h6>By <span>Michael Morpurgo</span></h6>
+                                </div>
+                                <div class="model-content__ratings flex">
+                                    <h6>3.0</h6>
+                                    <span class="">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star inactive"></i>
+                                        <i class="fa-solid fa-star inactive"></i>
+                                        <i class="fa-solid fa-star inactive"></i>
+                                    </span>
+                                    <h6>(<span>1,463</span> reviews)</h6>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
+                        <div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                                invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                                justo
+                                duo
+                                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+                                dolor
+                                sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod
+                                tempor
+                                invidunt ut labore et dolore
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                                invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                                justo
+                                duo
+                                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+                                dolor
+                                sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod
+                                tempor
+                                invidunt ut labore et dolore
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                                invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                                justo
+                                duo
+                                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+                                dolor
+                                sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod
+                                tempor
+                                invidunt ut labore et dolore
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                                invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                                justo
+                                duo
+                                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+                                dolor
+                                sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod
+                                tempor
+                                invidunt ut labore et dolore
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                                invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                                justo
+                                duo
+                                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+                                dolor
+                                sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod
+                                tempor
+                                invidunt ut labore et dolore
+                                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                                invidunt
+                                ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+                                justo
+                                duo
+                                dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
+                                dolor
+                                sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                eirmod
+                                tempor
+                                invidunt ut labore et dolore
+                            </p>
+                        </div>
+
+
+                        <div class="modal-content__book-details flex-column">
+                            <hr>
+                            <div class="flex">
+                                <p><i class="fas fa-calendar-alt"></i></i>2 Feb 2021</p>
+                                <p><i class="fa-solid fa-book-open"></i>320 Pages</p>
+                                <p><i class="fa-solid fa-language"></i>English</p>
+                                <p><i class="fa-solid fa-book"></i>Hardcover</p>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <button>Reserve</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Tippy JS --- Tooltip -->
+        <div id="one" class="tooltip">
+            <div class="tooltip__content">
+                <p class="p-subtitle">Adventure</p>
+                <h1>An Elephant In The Garden</h1>
+                <h6>By Michael Morpurgo</h6>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+                    invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                    accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata
+                    sanctus est Lorem ipsum
+                </p>
+            </div>
+        </div>
+
+        <!-- Link to open the modal -->
+        <p><a href="#ex1" rel="modal:open">Open Modal</a></p>
+    </main>
+
+    <!-- Javascript -->
+    <script src="./javascript/script.js" type="module"></script>
+</body>
+
+</html>
