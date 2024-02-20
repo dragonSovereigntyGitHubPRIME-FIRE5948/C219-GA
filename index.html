@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/01c275887b.js" crossorigin="anonymous"></script>
+    <!-- Tippy JS -->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale-extreme.css" />
+    <!-- jQuery UI - Tabs -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <!-- jQuery Modal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <!-- Stylesheet -->
+    <link href="stylesheet/style.css" rel="stylesheet" type="text/css" />
+    <title>School Library Web App</title>
+    <link rel="icon" type="image/png" href="./images/logo-icon.svg" />
+</head>
+
+<body>
+    <main>
+        <!-- Top Nav -->
+        <header>
+            <nav class="navbar">
+                <!-- Logo -->
+                <div class="logo"><img loading="lazy" src="./images/logo.svg" alt="Logo"></div>
+                <div class="push-left">
+                    <!-- Nav Items -->
+                    <ul id="primary-menu" class="menu nav-menu">
+                        <li id="nav__Home" class="menu-item current-menu-item">
+                            <a data-nav="home" class="nav__link">Home</i></a>
+                            <a data-nav="home" class="nav__link"><i class="fa-solid fa-house"></i></a>
+                        </li>
+                        <li id="nav__Stats" class="menu-item">
+                            <a data-nav="statistics" class="nav__link">Statistics</a>
+                            <a data-nav="statistics" class="nav__link"><i class="fa-solid fa-chart-simple"></i></a>
+                        <li id="nav__Inventory" class="menu-item">
+                            <a data-nav="inventory" class="nav__link">Inventory</a>
+                            <a data-nav="inventory" class="nav__link"><i class="fa-solid fa-database"></i></a>
+                        </li>
+                        <li id="nav__Contact" class="menu-item">
+                            <a data-nav="contact" class="nav__link">Contact</a>
+                            <a data-nav="contact" class="nav__link"><i class="fa-solid fa-phone-volume"></i></a>
+                        </li>
+                        <li id="" class="menu-item dropdown">
+                            <a class=""><i class="fa-solid fa-user"></i><i class="fa-solid fa-caret-down"></i></a>
+                            <!-- Dropdown -->
+                            <div class="dropdown-menu flex-column">
+                                <a id="Nav-Add-Book" href="#Add-Book-Modal" rel="modal:open" class="">Add Book</a>
+                                <a id="Nav-View-Bookmarks" href="#View-Bookmarks-Modal" rel="modal:open" class="">View
+                                    Bookmarks</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Dot Nav -->
+        <div class="dot-nav flex-column">
+            <div data-nav="home" class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+            <div data-nav="statistics" class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+            <div data-nav="inventory" class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+            <div data-nav="contact" class="dot-wrapper flex-center-all"><span class="dot"></span>
+                <div class="dot-fill"></div>
+            </div>
+        </div>
+
+        <!-- 1. Book Display Section -->
+        <section id="section__home">
+            <!-- SEARCH -->
+            <div class="top flex-column flex-center-all">
+                <i class="header__icon fa-solid fa-book-open-reader"></i>
+                <h1 class="header__title">Welcome to a World of Infinite Knowledge</h1>
+                <p class="header__subtitle">Unlocking Knowledge, One Click at a Time: Your School Library, Anywhere,
+                    Anytime!</p>
+                <div class="search-bar">
+                    <div tabindex="0" class="search-bar__container flex">
+                        <select id="BookDisplay__search-bar__option">
+                            <option value="title">Book Title</option>
+                            <option value="author">Author</option>
+                            <option value="genre">Genre</option>
+                        </select>
+                        <!-- <hr> -->
+                        <input id="BookDisplay__search-bar__input" class="search-bar__input" type="text"
+                            placeholder="Search for book titles...">
+                    </div>
+
+                    <button class="search-bar__button flex-center-all">
+                        <p>Search</p>
+                        <i class="flex fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BOOK DISPLAY -->
+            <div id="Book-Display" class="bottom flex-column flex-center-all">
+                <!-- TOP OPTIONS -->
+                <div class="tab-options flex">
+                    <!-- Show No. of Items -->
+                    <div class="tab-options__select">
+                        <p>Displaying</p>
+                        <select id="pagination__options" class="tab-options__pagination-options">
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                            <option class="tab-options__select-hide" value="18">21</option>
+                            <option class="tab-options__select-hide" value="21">24</option>
+                            <option class="tab-options__select-hide" value="21">27</option>
+                        </select>
+                        <p class="pagination__number-of-items-text"><span>1 - 8</span> of <span>0</span> items</p>
+                    </div>
+
+                    <!-- View Type -->
+                    <div class="tab-options__view">
+                        <p>View: </p>
+                        <span id="Book-Display__Grid-View" class="flex-center-all tab-options__view-icon active"><img
+                                src="./images/grid-icon.svg" alt="Grid Icon"></span>
+                        <span id="Book-Display__List-View" class="flex-center-all tab-options__view-icon"><i
+                                class="fa-solid fa-list"></i></span>
+                    </div>
+
+                    <!-- Sort & Filter -->
+                    <div class="tab-options__sort-and-filter">
+                        <!-- Sort -->
+                        <div class="tab-options__sort-container flex">
+                            <p>Sort: </p>
+                            <select id="Sort-Options">
+                                <option value="relevance">Relevance</option>
+                                <option value="title">Title</option>
+                                <option value="genre">Genre</option>
+                                <option value="author">Author</option>
+                                <option value="ratings">Ratings</option>
+                                <option value="reviews">Reviews</option>
+                                <option value="pages">Pages</option>
+                                <option value="publication-date">Publish Date</option>
+                            </select>
+                        </div>
+                        <!-- Sort order -->
+                        <div class="flex-column">
+                            <i class="fa-solid fa-caret-up tab-options__sort-order up active"></i>
+                            <i class="fa-solid fa-caret-down tab-options__sort-order down"></i>
+                        </div>
+                        <!-- Filter -->
+                        <div class="flex tab-options__filter-container">
+                            <p>Filter: </p>
+                            <button class="flex-center-all">Filter<i class="fa-solid fa-filter"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Filter Menu -->
+                <div class="filter-menu-container">
+                    <div class="filter-menu flex-column">
+                        <div class="filter-menu__header flex">
+                            <h3>Filter Books</h3>
+                            <button id="Filter__Button">Filter</button>
+                        </div>
+
+                        <label>Author</label>
+                        <div data-filter-type="author" id="Filter__Select-Author" class="select-container flex-column">
+                            <div class="flex">
+                                <select id="">
+                                    <option value="Elisabetta Dami">Elisabetta Dami</option>
+                                    <option value="George R. R. Martin">George R. R. Martin</option>
+                                    <option value="J. K. Rowling">J. K. Rowling</option>
+                                    <option value="Suzanne Collins">Suzanne Collins</option>
+                                </select>
+                                <button class="filter__select-button"><i class="fa-solid fa-check"></i></button>
+                            </div>
+
+                            <div class="filter__select-chosen-container flex">
+                            </div>
+                        </div>
+
+                        <!-- Genre -->
+                        <label>Genre</label>
+                        <div data-filter-type="genre" id="Filter__Select-Genre" class="select-container flex-column">
+                            <div class="flex">
+                                <select id="">
+                                    <option value="Children">Children</option>
+                                    <option value="Fantasy">Fantasy</option>
+                                    <option value="Fiction">Fiction</option>
+                                </select>
+                                <button class="filter__select-button"><i class="fa-solid fa-check"></i></button>
+                            </div>
+
+                            <div class="filter__select-chosen-container flex">
+                            </div>
+                        </div>
+
+                        <!-- Ratings -->
+                        <label>Ratings</label>
+                        <div data-filter-type="ratings" id="Filter__Checkbox-Ratings" class="filter-ratings flex">
+                            <div class="wrapper">
+                                <div class="star-container">
+                                    <input type="checkbox" id="st1" value="1" />
+                                    <label for="st1"></label>
+                                    <input type="checkbox" id="st2" value="2" />
+                                    <label for="st2"></label>
+                                    <input type="checkbox" id="st3" value="3" />
+                                    <label for="st3"></label>
+                                    <input type="checkbox" id="st4" value="4" />
+                                    <label for="st4"></label>
+                                    <input type="checkbox" id="st5" value="5" />
+                                    <label for="st5"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <label>Publication Date</label> -->
+
+                        <!-- Cover Type -->
+                        <label>Cover Type</label>
+                        <div data-filter-type="cover-type" id="Filter__Select-Cover-Type"
+                            class="select-container flex-column">
+                            <div class="flex">
+                                <select id="">
+                                    <option value="Hardcover">Hardcover</option>
+                                    <option value="Softcover">Softcover</option>
+                                    <option value="Paperback">Paperback</option>
+                                    <option value="Pocket-sized">Pocket-sized</option>
+                                    <option value="Board">Board</option>
+                                    <option value="Spiral-bound">Spiral-bound</option>
+                                    <option value="Flexibound">Flexibound</option>
+                                </select>
+                                <button class="filter__select-button"><i class="fa-solid fa-check"></i></button>
+                            </div>
+
+                            <div class="filter__select-chosen-container flex">
+                            </div>
+                        </div>
+
+                        <!-- Language -->
+                        <label>Language</label>
+                        <div data-filter-type="language" id="Filter__Select-Language"
+                            class="select-container flex-column">
+                            <div class="flex">
+                                <select id="">
+                                    <option value="English">English</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Malay">Malay</option>
+                                    <option value="Tamil">Tamil</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="German">German</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Vietnamese">Vietnamese</option>
+                                    <option value="Thai">Thai</option>
+                                </select>
+                                <button class="filter__select-button flex-center-all"><i
+                                        class="fa-solid fa-check"></i></button>
+                            </div>
+
+                            <div class="filter__select-chosen-container flex">
+                            </div>
+                        </div>
+
+                        <!-- Rental Status -->
+                        <label>Rental Status</label>
+                        <div data-filter-type="rental-status" id="Filter__Checkbox-Rental" class="flex">
+                            <input type="checkbox" name="Rented" value="rented">
+                            <label for="Rented">Rented</label><br>
+                            <input type="checkbox" name="Not Rented" value="not-rented">
+                            <label for="Not Rented">Not Rented</label><br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="tab-content">
+                    <div class="tab-content__no-item flex-center-all flex-column">
+                        <img loading="lazy" src="./images/no-content-logo.svg" alt="No Content Logo">
+                        <h1>No Books Found</h1>
+                        <p>Your search did not match any books
+                            <br>
+                            Please try again.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- BOTTOM OPTIONS -->
+                <div class="tab-options bottom flex">
+                    <!-- Show No. of Items -->
+                    <div class="tab-options__select">
+                        <p>Displaying</p>
+                        <select id="pagination__options" class="tab-options__pagination-options">
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                            <option class="tab-options__select-hide" value="18">18</option>
+                            <option class="tab-options__select-hide" value="21">21</option>
+                        </select>
+                        <p class="pagination__number-of-items-text"><span>1 - 8</span> of <span>0</span> items</p>
+                    </div>
+
+                    <!-- Pagination Numbers. -->
+                    <div class="tab-options__pagination-nav flex-center-all">
+                        <button class="pagination__nav-button prev" type="button"><i
+                                class="fa-solid fa-chevron-left"></i>Prev</button>
+
+                        <div class="pagination__nav-numbers flex-center-all">
+                        </div>
+
+                        <button class="pagination__nav-button next" type="button">Next<i
+                                class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+
+                    <!-- Go to Page. -->
+                    <div class="tab-options__page-input">
+                        <p>Go to page</p>
+                        <input type="number" id="" name="" value="1" minlength="1" maxlength="4">
+                        <p>of <span>0</span> page(s)</p>
+                    </div>
+                </div>
+        </section>
+
+        <!-- 1.5 Popular Books Section -->
+        <!-- <section id="section__popular-books">
+            <div class="popular-books__container flex">
+                <div class="popular-books__item">
+                    <div class="book">
+                        <div class="book-before"></div>
+                        <div class="image-wrapper">
+                            <img loading="lazy" src="./images/covers-front/afeastforcrows.webp" alt="Book Image">
+                        </div>
+                    </div>
+
+                    <div class="text">
+                        <p class="p-subtitle">subtitle</p>
+                        <p class="p-title">A Feast For Crows</p>
+                        <h6>By dragon<span></span></h6>
+                    </div>
+                </div>
+
+                <div class="popular-books__item">
+                    <div class="book">
+                        <div class="book-before"></div>
+                        <div class="image-wrapper">
+                            <img loading="lazy" src="./images/covers-front/afeastforcrows.webp" alt="Book Image">
+                        </div>
+                    </div>
+
+                    <div class="tab-content__item-content">
+                        <p class="p-subtitle">hiii</p>
+                        <p class="p-title">A Feast For Crows</p>
+                        <h6>By <span></span></h6>
+                    </div>
+                </div>
+
+                <div class="popular-books__item">
+                    <div class="book">
+                        <div class="book-before"></div>
+                        <div class="image-wrapper">
+                            <img loading="lazy" src="./images/covers-front/afeastforcrows.webp" alt="Book Image">
+                        </div>
+                    </div>
+
+                    <div class="tab-content__item-content">
+                        <p class="p-subtitle"></p>
+                        <p class="p-title">A Feast For Crows</p>
+                        <h6>By <span></span></h6>
+                    </div>
+                </div>
+
+                <div class="shelf"></div>
+            </div>
+        </section> -->
+
+        <!-- 2. Statistics Section -->
+        <section id="section__statistics">
+            <div class="section-header flex">
+                <hr>
+                <div>
+                    <h1 class="section-title">Statistics Section</h1>
+                    <p class="section-desc">We meticulously collect and analyze data that paints a vivid picture of the
+                        intellectual
+                        heartbeat of our school community. These statistics provide valuable insights into the dynamic
+                        relationship between students, faculty, and the wealth of information that resides within these
+                        walls. </p>
+                </div>
+                <hr>
+            </div>
+
+            <div class="statistics__option-select">
+                <select id="Select-Statistics">
+                    <option value="Dashboard">Dashboard</option>
+                    <option value="BookTitle">Book Title</option>
+                    <option value="Genre">Genre</option>
+                    <option value="Author">Author</option>
+                    <option value="Ratings">Ratings</option>
+                </select>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="Tab-Dashboard" class="statistics__option-container">
+                <!-- Dashboard -->
+                <div class="statistics-dashboard flex flex-center-all">
+                    <div class="dashboard_board statistics-dashboard__board1 flex">
+                        <div>
+                            <h1><span>1,100+</span> Titles to choose</h1>
+                            <p>Explore a diverse collection of over 1,100 book titles covering various genres,
+                                themes,
+                                and
+                                subjects.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h1><span>34</span> Genres available</h1>
+                            <p>Discover a spectrum of literary delights across 34 genres, catering to every reader's
+                                preference.</p>
+                        </div>
+
+                        <div>
+                            <h1><span>10,000+</span> Books rented</h1>
+                            <p>Unlock a world of literary adventures with rented books, catering to varied tastes
+                                and preferences.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard_board statistics-dashboard__board2 flex flex-center-all">
+                        <div>
+                        </div>
+
+                        <div>
+                            <canvas id="Genre-Doughnut"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="dashboard_board statistics-dashboard__board3">
+                        <canvas id="Genre-Radar"></canvas>
+                    </div>
+
+                    <div class="dashboard_board statistics-dashboard__board4">
+                        <canvas id="Genre-Trend"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book Title Charts -->
+            <div id="Tab-BookTitle" class="chart-tabs statistics__option-container">
+                <ul class="flex statistics__tabs">
+                    <li><a href="#tabs-2">Top Ratings</a></li>
+                    <li><a href="#tabs-3">Newest Titles</a></li>
+                    <li><a href="#tabs-3">Most Pages</a></li>
+                </ul>
+                <div id="tabs-2">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-Doughnut"></canvas> -->
+                        <canvas id="Titles__Top-Rating"></canvas>
+                    </div>
+                </div>
+                <div id="tabs-3">
+                    <div class="chart-wrapper">
+                        <canvas id="Genre-PolarArea"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Genre Charts -->
+            <div id="Tab-Genre" class="chart-tabs statistics__option-container">
+                <ul class="flex statistics__tabs">
+                    <li><a href="#tabs-2">Top Ratings</a></li>
+                    <li><a href="#tabs-3">Most Pages</a></li>
+                    <li><a href="#tabs-3">Title Distribution</a></li>
+                </ul>
+                <div id="tabs-2">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-Doughnut"></canvas> -->
+                    </div>
+                </div>
+                <div id="tabs-3">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-PolarArea"></canvas> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Author Charts -->
+            <div id="Tab-Author" class="chart-tabs statistics__option-container">
+                <ul class="flex statistics__tabs">
+                    <li><a href="#tabs-2">Top Ratings</a></li>
+                    <li><a href="#tabs-3">Most Books</a></li>
+                </ul>
+                <div id="tabs-2">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-Doughnut"></canvas> -->
+                    </div>
+                </div>
+                <div id="tabs-3">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-PolarArea"></canvas> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating Charts -->
+            <div id="Tab-Ratings" class="chart-tabs statistics__option-container">
+                <ul class="flex statistics__tabs">
+                    <li><a href="#tabs-2">Book Title</a></li>
+                    <li><a href="#tabs-3">Genre</a></li>
+                    <li><a href="#tabs-3">Author</a></li>
+                    <li><a href="#tabs-3">Language</a></li>
+                </ul>
+                <div id="tabs-2">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-Doughnut"></canvas> -->
+                    </div>
+                </div>
+                <div id="tabs-3">
+                    <div class="chart-wrapper">
+                        <!-- <canvas id="Genre-PolarArea"></canvas> -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Inventory Section -->
+        <section id="section__inventory">
+            <div class="section-header flex">
+                <hr>
+                <div>
+                    <h1 class="section-title">Inventory Section</h1>
+                    <p class="section-desc">We meticulously collect and analyze data that paints a vivid picture of the
+                        intellectual
+                        heartbeat of our school community. These statistics provide valuable insights into the dynamic
+                        relationship between students, faculty, and the wealth of information that resides within these
+                        walls. </p>
+                </div>
+                <hr>
+            </div>
+
+            <button id="DataTable-Delete-Button">Delete Row(s)</button>
+            <table id="Inventory-DataTable" class="display cell-border compact stripe"></table>
+        </section>
+
+        <!-- 4. Contact Section -->
+        <section id="section__contact">
+            <div class="section-header flex">
+                <hr>
+                <div>
+                    <h1 class="section-title">Contact Section</h1>
+                    <p class="section-desc">We meticulously collect and analyze data that paints a vivid picture of the
+                        intellectual
+                        heartbeat of our school community. These statistics provide valuable insights into the dynamic
+                        relationship between students, faculty, and the wealth of information that resides within these
+                        walls. </p>
+                </div>
+                <hr>
+            </div>
+
+            <div class="contact-container flex">
+                <!-- contact text -->
+                <div>
+                    <div class="contact__text">
+                        <h1>We eliminate the inconvinience of multiple visits.</h1>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-shield-alt"></i>No Second Injection or Temporaries</li>
+                            <li><i class="fas fa-shield-alt"></i>No Unprofessional Doctors</li>
+                            <li><i class="fas fa-shield-alt"></i>No Poor Quality Products</li>
+                            <li><i class="fas fa-shield-alt"></i>No Student at Australian University</li>
+                        </ul>
+                        <button>Learn more</button>
+                    </div>
+                </div>
+
+                <!-- contact form -->
+                <div>
+                    <div class="contact__form">
+                        <form class="flex-column">
+                            <label for="fname">First Name</label>
+                            <input type="text" id="fname" name="firstname" placeholder="Your name..">
+
+                            <label for="lname">Last Name</label>
+                            <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+
+                            <label for="subject">Subject</label>
+                            <textarea id="subject" name="subject" placeholder="Write something.."></textarea>
+                            <button>Submit form</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer">
+                <div class="row">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-youtube"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                </div>
+
+                <div class="row">
+                    <ul>
+                        <li><a data-section="home">Home</a></li>
+                        <li><a data-section="statistics">Statistics</a></li>
+                        <li><a data-section="inventory">Inventory</a></li>
+                        <li><a data-section="contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    School Library Web App Copyright © 2024 - All rights reserved || Neo Zhiwei Marcus
+                </div>
+            </div>
+        </footer>
+
+        <!-- jQuery Modal --- Modal (Add Book) -->
+        <div class="modal" id="Add-Book-Modal">
+            <div class="modal-content flex">
+                <div class="add-book-form_container flex-column">
+                    <div class="flex">
+                        <input type="text" id="desc" name="fname" placeholder="desc"><br>
+                        <input type="text" id="title" name="fname" placeholder="title"><br>
+                        <input type="text" id="author" name="lname" placeholder="author"><br><br>
+                        <input type="text" id="genre" name="lname" placeholder="genre"><br><br>
+                        <input type="text" id="cover-type" name="lname" placeholder="cover type"><br><br>
+                    </div>
+                    <div class="flex">
+                        <label for="bookmark">bookmark</label>
+                        <input type="checkbox" id="bookmark" name="bookmark" placeholder="bookmark"><br><br>
+
+                        <input type="text" id="language" name="lname" placeholder="language"><br><br>
+                        <input type="number" id="reviews" name="lname" placeholder="no of reviews"><br><br>
+                        <input type="number" id="pages" name="lname" placeholder="pages"><br><br>
+                    </div>
+                    <div class="flex">
+                        <label for="pub-date">pub-date</label>
+                        <input type="date" id="pub-date" name="lname" placeholder="pub date"><br><br>
+                        <input type="number" id="ratings" name="lname" placeholder="ratings"><br><br>
+
+                        <label for="rent-status">rent-status</label>
+                        <input type="checkbox" id="rent-status" name="rent-status" placeholder="rent-status"><br><br>
+
+                        <label for="rental-date">rent-date</label>
+                        <input type="date" id="rental-date" name="lname" placeholder="rental date"><br><br>
+                    </div>
+
+                    <button id="add"> ok</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery Modal --- Modal (Bookmarks) -->
+        <div class="modal" id="View-Bookmarks-Modal">
+            <div class="view-bookmarks__container flex-column">
+
+                <div class="bookmark-title">
+                    <h1>Bookmarks</h1>
+                </div>
+                <div class="bookmark-container"></div>
+            </div>
+        </div>
+
+        <!-- jQuery Modal --- Modal (Book) -->
+        <div class="modal" id="BookItem-Modal">
+            <div class="modal-content flex">
+                <div class="model-content__book-image col flex flex-center-all">
+                    <!-- book -->
+                    <div id="book" class="view-cover">
+                        <div class="main">
+                            <div class="book-font">
+                                <div class="book-cover"></div>
+                                <div class="book-cover-back"></div>
+                            </div>
+                            <div class="book-page">
+                                <div id="page-1" class="page">
+                                    <h4>Title</h4>
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+                                        tempor
+                                        invidunt
+                                        ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+                                        accusam et
+                                        justo
+                                        duo
+                                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+                                        Lorem ipsum
+                                        dolor
+                                        sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+                                        nonumy
+                                        eirmod
+                                        tempor
+                                        invidunt ut labore et dolore
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="book-back"> </div>
+                            <div class="book-bone"></div>
+                            <div class="book-top"></div>
+                            <div class="book-right"></div>
+                            <div class="book-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-content__text col flex-column">
+                    <div class="model-content__text-container flex-column">
+                        <div>
+                            <p class="p-subtitle modal-genre">-</h5>
+                            <h1 class="modal-title">-</h1>
+                            <div class="modal-content__author-and-ratings flex">
+                                <div>
+                                    <h6>By <span class="modal-author">-</span></h6>
+                                </div>
+                                <div class="model-content__ratings flex">
+                                    <h6 class="modal-rating">-</h6>
+                                    <span class="">
+                                        <i class="fa-solid fa-star rating-star inactive"></i>
+                                        <i class="fa-solid fa-star rating-star inactive"></i>
+                                        <i class="fa-solid fa-star rating-star inactive"></i>
+                                        <i class="fa-solid fa-star rating-star inactive"></i>
+                                        <i class="fa-solid fa-star rating-star inactive"></i>
+                                    </span>
+                                    <h6>(<span class="modal-reviews">-</span> reviews)</h6>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
+                        <div>
+                            <p class="modal-desc"></p>
+                        </div>
+
+
+                        <div class="modal-content__book-details flex-column">
+                            <hr>
+                            <div class="flex">
+                                <i class="fas fa-calendar-alt"><span class="modal-publish-date">-</span></i>
+                                <i class="fa-solid fa-book-open"><span class="modal-pages">-</span></i>
+                                <i class="fa-solid fa-solid fa-language"><span class="modal-language">-</span></i>
+                                <i class="fa-solid fa-book"><span class="modal-cover-type">-</span></i>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <button class="tab-content__item-reserve modal-reserve-button">Reserve</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Tippy JS --- Tooltip -->
+        <div class="tooltip" id="BookItem-Tooltip">
+            <div class="tooltip__content">
+                <p class="p-subtitle tooltip__genre">-</p>
+                <h1 class="tooltip__title">-</h1>
+                <h6 class="tooltip__author">-</h6>
+                <p class="tooltip__desc">-</p>
+                <div class="tooltip__tag-container flex">
+                    <div class="tooltip__tag">Fiction</div>
+                    <div class="tooltip__tag">Adventure</div>
+                    <div class="tooltip__tag">Story</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snackbar -->
+        <div class="snackbar">
+            <p> Reserved Successfully. Thank you for reserving.</p>
+        </div>
+    </main>
+
+    <!-- Javascript -->
+    <script src="./javascript/script.js" type="module"></script>
+</body>
+
+</html>
